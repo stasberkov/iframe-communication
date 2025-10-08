@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HTML Page with Communicating Iframes</title>
+    <style>
+        iframe {
+            width: 400px;
+            height: 200px;
+            border: 1px solid black;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Two Iframes Communicating via postMessage</h1>
+    <p>Click the button in one iframe to send a message to the other.</p>
+
+    <iframe name="frame1" srcdoc="
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Frame 1</title>
+        </head>
+        <body>
+            <h2>Frame 1</h2>
+            <button onclick=&quot;parent.frames['frame2'].postMessage('Hello from Frame 1!', '*')&quot;>Send to Frame 2</button>
+            <div id='received'>Received: </div>
+            <script>
+                window.addEventListener('message', function(e) {
+                    document.getElementById('received').innerText = 'Received: ' + e.data;
+                });
+            </script>
+        </body>
+        </html>
+    "></iframe>
+
+    <iframe name="frame2" srcdoc="
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Frame 2</title>
+        </head>
+        <body>
+            <h2>Frame 2</h2>
+            <button onclick=&quot;parent.frames['frame1'].postMessage('Hello from Frame 2!', '*')&quot;>Send to Frame 1</button>
+            <div id='received'>Received: </div>
+            <script>
+                window.addEventListener('message', function(e) {
+                    document.getElementById('received').innerText = 'Received: ' + e.data;
+                });
+            </script>
+        </body>
+        </html>
+    "></iframe>
+
+</body>
+</html>

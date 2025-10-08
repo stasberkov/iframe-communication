@@ -1,0 +1,3 @@
+= Example of how 2 iframes hosted on a page can communicate
+
+How to run: checkout, run `npx http-server .`
